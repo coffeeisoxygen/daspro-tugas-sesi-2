@@ -1,0 +1,17 @@
+@startuml
+start
+:git checkout main;
+:git pull origin main;
+:git checkout -b feature-xyz;
+while (Edit File?)
+  :git add .;
+  :git commit -m "Update fitur";
+endwhile
+:git push -u origin feature-xyz;
+:Pull Request di GitHub;
+:Review & Merge ke main;
+:git checkout main;
+:git pull origin main;
+:git branch -d feature-xyz;
+stop
+@enduml

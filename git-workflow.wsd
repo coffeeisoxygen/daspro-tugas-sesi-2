@@ -1,0 +1,85 @@
+@startuml "git-workflow"
+skinparam backgroundColor white
+skinparam activityBorderColor black
+skinparam activityBackgroundColor lightBlue
+skinparam arrowColor black
+
+title Git & GitHub Workflow
+
+|Setup|
+start
+:git init;
+:git remote add origin [URL];
+note right: Or clone repository:\ngit clone [URL]
+
+|Daily Work|
+:git checkout main;
+:git pull origin main;
+:git checkout -b feature/xyz;
+
+|Development Loop|
+repeat
+  :Edit files;
+  :git status;
+  note right: Check which files\nhave been modified
+  :git add [files];
+  note right: Stage specific files\nOr use git add . for all
+  :git commit -m "Description";
+  note right: Create local commit
+repeat while (More changes?) is (Yes)
+->No;
+
+|Code Review & Integration|
+:git push -u origin feature/xyz;
+:Create Pull Request on GitHub;
+if (Changes requested?) then (Yes)
+  :Review comments;
+  :Make changes;
+  :git add [files];
+  :git commit -m "Address feedback";
+  :git push origin feature/xyz;
+  note right: PR automatically updated
+endif
+
+|Merge Process|
+:PR approved;
+:Merge PR on GitHub;
+note right: Or use Squash & Merge\nor Rebase & Merge
+
+|Cleanup|
+:git checkout main;
+:git pull origin main;
+:git branch -d feature/xyz;
+note right: Delete local branch
+
+|Common Scenarios|
+floating note right: Common Scenarios
+:Merge conflicts?;
+note right
+  git pull origin main
+  Resolve conflicts manually
+  git add .
+  git commit
+end note
+
+:Undo local changes?;
+note right
+  Unstaged: git checkout -- <file>
+  Staged: git reset <file>
+  Last commit: git reset --soft HEAD~1
+end note
+
+:View history?;
+note right
+  git log
+  git log --graph --oneline
+end note
+
+:Work with tags?;
+note right
+  Create: git tag v1.0.0
+  Push: git push origin v1.0.0
+end note
+
+stop
+@enduml
